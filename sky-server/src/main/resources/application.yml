@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 3001
 
 spring:
   profiles:
@@ -9,6 +9,7 @@ spring:
   datasource:
     druid:
       driver-class-name: ${sky.datasource.driver-class-name}
+#      url: jdbc:mysql://localhost:3306/sky_take_out
       url: jdbc:mysql://${sky.datasource.host}:${sky.datasource.port}/${sky.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: ${sky.datasource.username}
       password: ${sky.datasource.password}
