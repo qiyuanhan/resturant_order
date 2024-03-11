@@ -102,4 +102,20 @@ public class EmployeeController {
         employeeService.changeStatus(status,id);
         return Result.success();
     }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "查询员工")
+    public Result<Employee> inquire(@PathVariable Long id){
+        log.info("查询员工信息id:{id}",id);
+        Employee employee=employeeService.inquire(id);
+        return Result.success(employee);
+    }
+
+    @PutMapping
+    @ApiOperation(value = "修改员工信息")
+    public Result updateInformation(@RequestBody EmployeeDTO employeeDTO){
+        log.info("更改员工信息:{}",employeeDTO);
+        employeeService.updateInformation(employeeDTO);
+        return Result.success();
+    }
 }
