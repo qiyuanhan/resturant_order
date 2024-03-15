@@ -38,3 +38,8 @@ sky:
     admin-ttl: 7200000000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
+  alioss:
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    access-key-id: LTAI5tGUgahdi7nxhXy7tzuD
+    access-key-secret: U1tNtUaDLnoIKHIDX9uPCbjjLDzfL7
+    bucket-name: web-sky-take-out125
