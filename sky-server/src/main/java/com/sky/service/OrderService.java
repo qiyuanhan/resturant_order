@@ -46,4 +46,8 @@ public interface OrderService {
     void delivery(Long id);
 
     void complete(Long id);
+
+    Object getIdBynumber(String orderNumber);
+
+    void reminder(Long id);
 }
