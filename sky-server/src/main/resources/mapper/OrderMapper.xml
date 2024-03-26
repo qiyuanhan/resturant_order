@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.OrderMapper">
+    <resultMap id="orderMap" type="com.sky.vo.OrderVO">
+        <id property="id" column="id"/>
+        <result property="number" column="number"/>
+        <result property="status" column="status"/>
+        <result property="userId" column="user_id"/>
+        <result property="addressBookId" column="address_book_id"/>
+        <result property="orderTime" column="order_time"/>
+        <result property="checkoutTime" column="checkout_time"/>
+        <result property="payMethod" column="pay_method"/>
+        <result property="payStatus" column="pay_status"/>
+        <result property="amount" column="amount"/>
+        <result property="remark" column="remark"/>
+        <result property="phone" column="phone"/>
+        <result property="address" column="address"/>
+        <result property="userName" column="user_name"/>
+        <result property="consignee" column="consignee"/>
+        <result property="cancelReason" column="cancel_reason"/>
+        <result property="rejectionReason" column="rejection_reason"/>
+        <result property="cancelTime" column="cancel_time"/>
+        <result property="estimatedDeliveryTime" column="estimated_delivery_time"/>
+        <result property="deliveryStatus" column="delivery_status"/>
+        <result property="deliveryTime" column="delivery_time"/>
+        <result property="packAmount" column="pack_amount"/>
+        <result property="tablewareNumber" column="tableware_number"/>
+        <result property="tablewareStatus" column="tableware_status"/>
+        <!-- 定义一个集合，用来装载用户的订单信息 -->
+        <collection property="orderDetailList" ofType="com.sky.entity.OrderDetail">
+            <id property="id" column="order_detail_id"/>
+            <result property="name" column="name"/>
+            <result property="image" column="image"/>
+            <result property="orderId" column="order_id"/>
+            <result property="dishId" column="dish_id"/>
+            <result property="setmealId" column="setmeal_id"/>
+            <result property="dishFlavor" column="dish_flavor"/>
+            <result property="number" column="order_detail_number"/>
+            <result property="amount" column="order_detail_amount"/>
+        </collection>
+    </resultMap>
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into orders(number, status, user_id, address_book_id, order_time, checkout_time, pay_method, pay_status,
+                           amount, remark, phone, address, user_name, consignee, cancel_reason, rejection_reason,
+                           cancel_time, estimated_delivery_time, delivery_status, delivery_time, pack_amount,
+                           tableware_number, tableware_status)
+        VALUES (#{number}, #{status}, #{userId}, #{addressBookId}, #{orderTime}, #{checkoutTime}, #{payMethod},
+                #{payStatus},
+                #{amount}, #{remark}, #{phone}, #{address}, #{userName}, #{consignee}, #{cancelReason},
+                #{rejectionReason},
+                #{cancelTime}, #{estimatedDeliveryTime}, #{deliveryStatus}, #{deliveryTime}, #{packAmount},
+                #{tablewareNumber}, #{tablewareStatus})
+
+    </insert>
+
+    <update id="update" parameterType="com.sky.entity.Orders">
+        update orders
+        <set>
+            <if test="cancelReason != null and cancelReason!='' ">
+                cancel_reason=#{cancelReason},
+            </if>
+            <if test="rejectionReason != null and rejectionReason!='' ">
+                rejection_reason=#{rejectionReason},
+            </if>
+            <if test="cancelTime != null">
+                cancel_time=#{cancelTime},
+            </if>
+            <if test="payStatus != null">
+                pay_status=#{payStatus},
+            </if>
+            <if test="payMethod != null">
+                pay_method=#{payMethod},
+            </if>
+            <if test="checkoutTime != null">
+                checkout_time=#{checkoutTime},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="pageQuery" resultType="com.sky.vo.OrderVO" >
+        select *from orders
+        <where>
+            <if test="userId !=null">
+                and user_id=#{userId}
+            </if>
+            <if test="status !=null">
+                and status=#{status}
+            </if>
+            <if test="beginTime !=null">
+                and order_time &gt;#{beginTime}
+            </if>
+            <if test="endTime !=null">
+                and order_time &lt;#{endTime}
+            </if>
+            <if test="number !=null">
+                and number =#{number}
+            </if>
+            <if test="phone !=null">
+                and phone =#{phone}
+            </if>
+        </where>
+    </select>
+<!--    <select id="pageQuery" resultType="com.sky.vo.OrderVO" resultMap="orderMap">-->
+<!--        select o.*,d.id as order_detail_id,d.name,d.image,d.order_id,d.dish_id,d.setmeal_id,d.dish_flavor,d.number as-->
+<!--        order_detail_number,d.amount as order_detail_amount from orders as o left outer join order_detail d on o.id =-->
+<!--        d.order_id-->
+<!--        <where>-->
+<!--            <if test="userId !=null">-->
+<!--                and o.user_id=#{userId}-->
+<!--            </if>-->
+<!--            <if test="status !=null">-->
+<!--                and o.status=#{status}-->
+<!--            </if>-->
+<!--            <if test="beginTime !=null">-->
+<!--                and o.order_time &gt;#{beginTime}-->
+<!--            </if>-->
+<!--            <if test="endTime !=null">-->
+<!--                and o.order_time &lt;#{endTime}-->
+<!--            </if>-->
+<!--            <if test="number !=null">-->
+<!--                and o.number =#{number}-->
+<!--            </if>-->
+<!--            <if test="phone !=null">-->
+<!--                and o.phone =#{phone}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
+    <select id="getByOrderId" resultType="com.sky.vo.OrderVO" resultMap="orderMap">
+        select o.*,d.id as order_detail_id,d.name,d.image,d.order_id,d.dish_id,d.setmeal_id,d.dish_flavor,d.number as
+        order_detail_number,d.amount as order_detail_amount from orders as o left join order_detail d on o.id =
+        d.order_id
+        <where>
+            o.id=#{id}
+        </where>
+    </select>
+</mapper>
