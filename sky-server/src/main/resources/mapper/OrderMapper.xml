@@ -86,7 +86,7 @@
         </set>
         where id = #{id}
     </update>
-    <select id="pageQuery" resultType="com.sky.vo.OrderVO" >
+    <select id="pageQuery" resultType="com.sky.vo.OrderVO">
         select *from orders
         <where>
             <if test="userId !=null">
@@ -109,37 +109,51 @@
             </if>
         </where>
     </select>
-<!--    <select id="pageQuery" resultType="com.sky.vo.OrderVO" resultMap="orderMap">-->
-<!--        select o.*,d.id as order_detail_id,d.name,d.image,d.order_id,d.dish_id,d.setmeal_id,d.dish_flavor,d.number as-->
-<!--        order_detail_number,d.amount as order_detail_amount from orders as o left outer join order_detail d on o.id =-->
-<!--        d.order_id-->
-<!--        <where>-->
-<!--            <if test="userId !=null">-->
-<!--                and o.user_id=#{userId}-->
-<!--            </if>-->
-<!--            <if test="status !=null">-->
-<!--                and o.status=#{status}-->
-<!--            </if>-->
-<!--            <if test="beginTime !=null">-->
-<!--                and o.order_time &gt;#{beginTime}-->
-<!--            </if>-->
-<!--            <if test="endTime !=null">-->
-<!--                and o.order_time &lt;#{endTime}-->
-<!--            </if>-->
-<!--            <if test="number !=null">-->
-<!--                and o.number =#{number}-->
-<!--            </if>-->
-<!--            <if test="phone !=null">-->
-<!--                and o.phone =#{phone}-->
-<!--            </if>-->
-<!--        </where>-->
-<!--    </select>-->
+    <!--    <select id="pageQuery" resultType="com.sky.vo.OrderVO" resultMap="orderMap">-->
+    <!--        select o.*,d.id as order_detail_id,d.name,d.image,d.order_id,d.dish_id,d.setmeal_id,d.dish_flavor,d.number as-->
+    <!--        order_detail_number,d.amount as order_detail_amount from orders as o left outer join order_detail d on o.id =-->
+    <!--        d.order_id-->
+    <!--        <where>-->
+    <!--            <if test="userId !=null">-->
+    <!--                and o.user_id=#{userId}-->
+    <!--            </if>-->
+    <!--            <if test="status !=null">-->
+    <!--                and o.status=#{status}-->
+    <!--            </if>-->
+    <!--            <if test="beginTime !=null">-->
+    <!--                and o.order_time &gt;#{beginTime}-->
+    <!--            </if>-->
+    <!--            <if test="endTime !=null">-->
+    <!--                and o.order_time &lt;#{endTime}-->
+    <!--            </if>-->
+    <!--            <if test="number !=null">-->
+    <!--                and o.number =#{number}-->
+    <!--            </if>-->
+    <!--            <if test="phone !=null">-->
+    <!--                and o.phone =#{phone}-->
+    <!--            </if>-->
+    <!--        </where>-->
+    <!--    </select>-->
     <select id="getByOrderId" resultType="com.sky.vo.OrderVO" resultMap="orderMap">
         select o.*,d.id as order_detail_id,d.name,d.image,d.order_id,d.dish_id,d.setmeal_id,d.dish_flavor,d.number as
         order_detail_number,d.amount as order_detail_amount from orders as o left join order_detail d on o.id =
         d.order_id
         <where>
             o.id=#{id}
+        </where>
+    </select>
+    <select id="sumByMap" resultType="java.lang.Double">
+        select sum(amount) from orders
+        <where>
+            <if test="begin != null">
+                and order_time &gt; #{begin}
+            </if>
+            <if test="end !=null">
+                and order_time &lt; #{end}
+            </if>
+            <if test="status !=null">
+                and status =#{status}
+            </if>
         </where>
     </select>
 </mapper>

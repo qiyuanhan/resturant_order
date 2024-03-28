@@ -13,6 +13,7 @@ import org.apache.ibatis.annotations.Update;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.DoubleStream;
 
 @Mapper
@@ -63,4 +64,5 @@ public interface OrderMapper {
     @Select("select * from orders where status=#{status} and order_time <#{now}")
     List<Orders> getStatusAndOrderTime(Integer status, LocalDateTime now);
 
+    Double sumByMap(Map map);
 }
